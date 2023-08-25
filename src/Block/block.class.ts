@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Chain } from './Types';
-import { SHA256 } from 'crypto-js/sha256';
+import { Transaction } from './Types';
+import * as SHA256 from 'crypto-js/sha256';
 
 @Injectable()
 export default class BlockChain {
   chain: Chain[];
-  pendingTransactions: any[];
+  pendingTransactions: Transaction[];
   constructor() {
     this.chain = [this.createGenesisBlock()];
     this.pendingTransactions = [];
@@ -43,7 +44,8 @@ export default class BlockChain {
     return { hash, nonce };
   }
 
-  createTransaction(amount, sender, recipient) {
+  createTransaction(payload: Transaction) {
+    const { amount, sender, recipient } = payload;
     this.pendingTransactions.push({
       amount,
       sender,
@@ -57,7 +59,7 @@ export default class BlockChain {
     const previousBlockHash = this.getLastBlock().hash;
     const generateHash = this.generateHash(previousBlockHash, timeStamp);
 
-    const newBlock = {
+    const newBlock: Chain = {
       index: this.chain.length + 1,
       timeStamp,
       transactions,
@@ -70,5 +72,19 @@ export default class BlockChain {
     this.chain.push(newBlock);
 
     return newBlock;
+  }
+
+  isChainValid() {
+    for (let i = 1; i < this.chain.length; i++) {
+      const currentBlock = this.chain[i];
+      const previousBlock = this.chain[i - 1];
+
+      if (currentBlock.previousBlockHash != previousBlock.hash) {
+        console.log('second', currentBlock.previousBlockHash);
+        console.log(previousBlock);
+        return false;
+      }
+    }
+    return true;
   }
 }
