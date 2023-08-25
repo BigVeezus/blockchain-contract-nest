@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import BlockChain from './Block/block.class';
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+  constructor(private blockChain: BlockChain) {}
+  getBlockChain() {
+    const coin = this.blockChain;
+    return coin;
   }
 }

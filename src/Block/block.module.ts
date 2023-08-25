@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { BlockClass } from './block.class';
+import BlockChain from './block.class';
 import { BlockService } from './block.service';
 
 @Module({
   imports: [],
-  controllers: [BlockClass],
-  providers: [BlockService],
+  controllers: [],
+  providers: [BlockService, BlockChain],
 })
-export class AppModule {}
+export class BlockModule {}
