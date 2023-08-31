@@ -4,6 +4,7 @@
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
+    "moduleResolution": "Node",
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     // "noEmit": true,
